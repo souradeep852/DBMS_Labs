@@ -144,11 +144,10 @@ public:
     {
         this->recordsvector.push_back(r);
         numofrecords++;
-        freespacebaseaddr = sizeofpage - spaceleft +1;
-        spaceleft -= r.getrecordsize();
+        freespacebaseaddr = sizeofpage - spaceleft + 1;
+        spaceleft -= r.getrecordsize()+4;
     }
 };
-
 
 class heapfile
 {
@@ -195,7 +194,7 @@ public:
             cout << p->getnumofrecords() << " ";
             p = p->getnextpage();
         }
-        cout<<endl;
+        cout << endl;
     }
 
     void search(int t)
@@ -207,13 +206,13 @@ public:
             {
                 if (i->getkey() == t)
                 {
-                    cout << i->getpageid() << " " << i->getslotid()<<endl;
+                    cout << i->getpageid() << " " << i->getslotid() << endl;
                     return;
                 }
             }
             r = r->getnextpage();
         }
-        cout<<-1<<" "<<-1<<endl;
+        cout << -1 << " " << -1 << endl;
     }
 
     void insert(int rsize, int rdata)
@@ -239,13 +238,12 @@ public:
         if (flag == false)
         {
             // newpage and insert the data here as the data hasn't been inserted in the prev page
-            page *np=new page(pagesize);
+            page *np = new page(pagesize);
             np->newpage(lastpage);
             np->insertrecord(ri);
         }
     }
 };
-
 
 heapfile hf;
 int main()
